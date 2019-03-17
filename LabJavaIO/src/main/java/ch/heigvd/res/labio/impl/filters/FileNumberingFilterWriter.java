@@ -48,21 +48,25 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(int c) throws IOException {
-        if (compteur == 1) {
+
+        char br = '\r';
+        char bn = '\n';
+
+        if (compteur == 1) {  //premiere ecriture
             super.write(String.valueOf(compteur++) + '\t');
             super.write(c);
-        } else if ((char) c == '\n') {
+        } else if ((char) c == bn) {
             isBr = false;
             super.write(c);
             super.write( String.valueOf(compteur++) + '\t');
 
-        } else if ((char) c == '\r') {
+        } else if ((char) c == br) {
             isBr = true;
             super.write(c);
         } else {
             if (isBr) {
-                out.write(String.valueOf(compteur++) + '\t'); //si cette fonction est avec super.write cç ne fonctionne pas sur MacOS pour des raisons obscures
                 isBr = false;
+                super.write(String.valueOf(compteur++) + '\t');
             }
             super.write(c);
         }
